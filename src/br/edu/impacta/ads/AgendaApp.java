@@ -7,8 +7,8 @@ import static java.lang.System.out;
 public class AgendaApp {
 	private static Scanner entrada = new Scanner(System.in);
 	//private static List<Contato> contatos = new ArrayList<>();
-	private static IContatoDao dao = new ContatoDao();
-	//private static IContatoDao dao = new ContatoDaoArquivo("contatos.txt");
+	//private static IContatoDao dao = new ContatoDao();
+	private static IContatoDao dao = new ContatoDaoArquivo("contatos.txt");
 	public static void main(String[] args){
 		boolean sair= false;
 		while(!sair){
