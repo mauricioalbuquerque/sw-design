@@ -6,7 +6,9 @@ import static java.lang.System.out;
 
 public class AgendaApp {
 	private static Scanner entrada = new Scanner(System.in);
-	private static List<Contato> contatos = new ArrayList<>();
+	//private static List<Contato> contatos = new ArrayList<>();
+	private static IContatoDao dao = new ContatoDao();
+	//private static IContatoDao dao = new ContatoDaoArquivo("contatos.txt");
 	public static void main(String[] args){
 		boolean sair= false;
 		while(!sair){
@@ -26,13 +28,30 @@ public class AgendaApp {
 		String nome= lerNome();
 		String telefone = lerTelefone();
 		Contato c = new Contato(nome,telefone);
-		if(contatos.contains(c)){
+		//if(contatos.contains(c)){
+		if(dao.existe(c)){
 			out.println("Este contato já esta cadastrado!");
 		}else{
-			contatos.add(c);
+			//contatos.add(c);
+			dao.inserir(c);
 			out.println("contato inserido");
 		}
 		
+	}
+	private static String lerTelefone() {
+		boolean valido = false;
+		String telefone = "";
+		while(!valido){
+			out.print("telefone: ");
+			telefone = entrada.nextLine();
+			if(telefone.length() == 0 || telefone.length() >25){
+				out.println("tamannho de telefone invalido");
+			}else{
+				valido = true;
+			}
+			
+		}
+		return telefone;
 	}
 	private static String lerNome() {
 		boolean valido = false;
@@ -64,5 +83,25 @@ public class AgendaApp {
 			}
 		}
 		return opcao;
+	}
+	private static void buscarContato(){
+		out.println("\nBUSCA DE CONTATOS:");
+		String nome = lerNome();
+	/*	List<Contato>resultado = new ArrayList<>();
+	*	for(Contato c : contatos){
+	*	if(nome.equals(c.getNome())){
+	*	resultado.add(c);
+	*	}
+	*	}
+	*/
+		List<Contato>resultado = dao.buscar(nome);
+		if(resultado.size() == 0){
+		out.println("Não há contato com este Nome!");
+		}else{
+		out.println("\nResultado da busca: ");
+		for(Contato c: resultado){
+		out.println(c);
+		}
+		}
 	}
 }
